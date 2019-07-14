@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">AppWeather</string>
+    <string-array name="query_suggestios">
+        <item>Ha noi</item>
+        <item>Vinh</item>
+        <item>Paris</item>
+        <item>Tokyo</item>
+        <item>Singapore</item>
+        <item>Chicago</item>
+        <item>Lang Son</item>
+        <item>Yen bai</item>
+        <item>Da nang</item>
+        <item>Hoi An</item>
+        <item>Hai duong</item>
+        <item>Nam dinh</item>
+        <item>London</item>
+
+
+
+
+
+
+    </string-array>
+</resources>

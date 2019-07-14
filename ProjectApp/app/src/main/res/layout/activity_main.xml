@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".activity.MainActivity">
+
+    <FrameLayout
+
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/search_layover_bg"
+            android:elevation="4dp"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+    </FrameLayout>
+
+    <ScrollView
+        android:background="@drawable/background"
+        android:layout_below="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+            <ImageView
+                android:id="@+id/imgLocal"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/local"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvNameLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Ha Noi"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                app:layout_constraintLeft_toRightOf="@+id/imgLocal"
+                app:layout_constraintTop_toTopOf="@+id/imgLocal" />
+
+            <TextView
+                android:id="@+id/tvTimeDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="T.6, 28 tháng 6 00:15"
+                android:textColor="#FFFFFF"
+                app:layout_constraintLeft_toLeftOf="@+id/imgLocal"
+                app:layout_constraintTop_toBottomOf="@+id/tvNameLocal" />
+
+            <ImageView
+
+
+                android:id="@+id/imgIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="120dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvNhietDo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:text="30"
+                android:textColor="#FFFFFF"
+                android:textSize="100dp"
+                app:layout_constraintLeft_toRightOf="@+id/imgIcon"
+                app:layout_constraintTop_toBottomOf="@+id/tvNameLocal" />
+
+
+            <TextView
+                android:id="@+id/tvDuBao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="65dp"
+
+                android:text="Mây ít"
+                android:textColor="#FFFFFF"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgIcon" />
+
+            <TextView
+                android:id="@+id/tvMinMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="180dp"
+                android:text="37/30 "
+                android:textColor="#FFFFFF"
+                android:textSize="15dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvNhietDo" />
+
+            <RelativeLayout
+                android:id="@+id/rlBackgtound"
+                android:layout_width="match_parent"
+                android:layout_height="235dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/backgroundlitte"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvMinMax">
+
+                <ImageView
+                    android:id="@+id/imgSunrise"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/sunrise" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imgSunrise"
+                    android:layout_alignBottom="@+id/imgSunrise"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/imgSunrise"
+                    android:text="Bình minh"
+                    android:textColor="#FFFF" />
+
+                <TextView
+                    android:id="@+id/tvTimeBm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:text="00:00"
+                    android:textColor="#FFFF" />
+
+                <ImageView
+                    android:id="@+id/imgLineblackBm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgSunrise"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/lineblack" />
+
+                <ImageView
+                    android:id="@+id/imgSunset"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/imgLineblackBm"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/sunset" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imgSunset"
+                    android:layout_alignBottom="@+id/imgSunset"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/imgSunset"
+                    android:text="Hoàng hôn"
+                    android:textColor="#FFFF" />
+
+                <TextView
+                    android:id="@+id/tvTimeHh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgLineblackBm"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:text="00:00"
+                    android:textColor="#FFFF" />
+
+                <ImageView
+                    android:id="@+id/imgLineblackHh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgSunset"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/lineblack" />
+
+
+                <ImageView
+                    android:id="@+id/imgRain"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/imgSunset"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rain" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imgRain"
+                    android:layout_alignBottom="@+id/imgRain"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/imgRain"
+                    android:text="Lượng mưa trong 3h qua"
+                    android:textColor="#FFFF" />
+
+                <TextView
+                    android:id="@+id/tvLuongMua"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgLineblackHh"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:text="40%"
+                    android:textColor="#FFFF" />
+
+                <ImageView
+                    android:id="@+id/imgLineblackLuongMua"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgRain"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/lineblack" />
+
+                <ImageView
+                    android:id="@+id/imgHumidity"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/imgRain"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/humidity" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imgHumidity"
+                    android:layout_alignBottom="@+id/imgHumidity"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/imgHumidity"
+                    android:text="Độ Ẩm"
+                    android:textColor="#FFFF" />
+
+                <TextView
+                    android:id="@+id/tvPhanTramDoAm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgLineblackLuongMua"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:text="98%"
+                    android:textColor="#FFFF" />
+
+                <ImageView
+                    android:id="@+id/imgLineblackDoAm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgHumidity"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/lineblack" />
+
+                <ImageView
+                    android:id="@+id/imgWind"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/imgHumidity"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/wind" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imgWind"
+                    android:layout_alignBottom="@+id/imgWind"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/imgWind"
+                    android:text="Gió"
+                    android:textColor="#FFFF" />
+
+                <TextView
+                    android:id="@+id/tvSpeedWind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgLineblackDoAm"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:text="2m/s"
+                    android:textColor="#FFFF" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvHangGio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:text="Hàng giờ"
+                android:textColor="#FFFF"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rlBackgtound" />
+
+
+            <RelativeLayout
+                android:id="@+id/rlHangGio"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/backgroundlitte"
+                app:layout_constraintLeft_toLeftOf="@+id/tvHangGio"
+                app:layout_constraintTop_toBottomOf="@+id/tvHangGio">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcHangGio"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"></androidx.recyclerview.widget.RecyclerView>
+            </RelativeLayout>
+
+            <TextView
+
+                android:id="@+id/tvHangNgay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:text="Hàng ngày"
+                android:textColor="#ffff"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rlHangGio" />
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:id="@+id/rlHangNgay"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/backgroundlitte"
+                app:layout_constraintLeft_toLeftOf="@+id/tvHangNgay"
+                app:layout_constraintTop_toBottomOf="@+id/tvHangNgay">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcHangNgay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"></androidx.recyclerview.widget.RecyclerView>
+            </RelativeLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+
+</RelativeLayout>
