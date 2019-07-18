@@ -41,10 +41,7 @@ public class AdapterHangNgay extends RecyclerView.Adapter<AdapterHangNgay.ViewHo
         long time=hangNgay.getTimeNgay();
         String sTime=new java.text.SimpleDateFormat("dd/MM").format(new java.util.Date(time * 1000));
         holder.tvTime.setText(sTime);
-        double dTemp=(double)hangNgay.getTemp()-273.15;
-        dTemp=Math.round(dTemp);
-        int iTemp=(int)dTemp;
-        holder.tvTemp.setText(iTemp+"°");
+        holder.tvTemp.setText(hangNgay.getTemp()+"°");
         holder.tvDoAm.setText(hangNgay.getDoAm()+"%");
         String icon=hangNgay.getIcon();
         switch (icon){

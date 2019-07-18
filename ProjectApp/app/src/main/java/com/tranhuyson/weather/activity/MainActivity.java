@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -25,9 +26,11 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tranhuyson.weather.Adapter.AdapterHangGio;
 import com.tranhuyson.weather.Adapter.AdapterHangNgay;
 import com.tranhuyson.weather.R;
+import com.tranhuyson.weather.model.GraphDays;
 import com.tranhuyson.weather.model.HangGio;
 import com.tranhuyson.weather.model.HangNgay;
 import com.tranhuyson.weather.model.MainWeather;
+import com.tranhuyson.weather.model.NameCity;
 import com.tranhuyson.weather.model.SysWeather;
 import com.tranhuyson.weather.model.Weather;
 import com.tranhuyson.weather.model.Wind;
@@ -53,13 +56,10 @@ import static com.tranhuyson.weather.model.Define.API_WEATHER_KEY;
 public class MainActivity extends AppCompatActivity {
     private TextView tvTimeDate, tvDescription, tvTemp, tvTimeSunRise, tvTimeSunSet, tvHumidity, tvMinMax, tvSpeedWind, tvNameCity, tvLuongMua;
     private ImageView imgIcon;
-
     String nameCity = "Hanoi";
     String urlAPI = API_WEATHER + "weather?q=" + nameCity + API_WEATHER_KEY;
     String urlAPI_HOUR = API_WEATHER + "forecast?q=" + nameCity + API_WEATHER_KEY;
     String urlAPI_DAY = API_WEATHER + "forecast/daily?q=" + nameCity + API_WEATHER_KEY;
-    //private String urlAPI ;
-
     private ArrayList<HangGio> mListHangGio;
     private RecyclerView mRecyclerView;
     private AdapterHangGio mAdapter;
@@ -71,11 +71,15 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG1 = "WeatherMapHour";
     MaterialSearchView mSearchView;
     Toolbar mToolbar;
+    private List<String> mListGraphDay;
+    GraphDays mygraphDays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mygraphDays = findViewById(R.id.grDay);
+        new DogetJsonGraphDay().execute(urlAPI_DAY);
         addControl();
 
 
@@ -92,13 +96,9 @@ public class MainActivity extends AppCompatActivity {
         mListHangNgay = new ArrayList<HangNgay>();
         mAdapterHangNgay = new AdapterHangNgay(MainActivity.this, mListHangNgay);
         mRecycleViewHangNgay.setAdapter(mAdapterHangNgay);
-
         new DoGetDaTaHangNgay().execute(urlAPI_DAY);
-
         new DoGetData().execute(urlAPI);
-
-
-        //new DoGetDaTaHangGio().execute();
+        new DoGetDaTaHangGio().execute(urlAPI_HOUR);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         mSearchView = findViewById(R.id.search_view);
@@ -109,11 +109,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 urlAPI = API_WEATHER + "weather?q=" + query + API_WEATHER_KEY;
                 urlAPI_HOUR = API_WEATHER + "forecast?q=" + query + API_WEATHER_KEY;
-
                 urlAPI_DAY = API_WEATHER + "forecast/daily?q=" + query + API_WEATHER_KEY;
                 new DoGetData().execute(urlAPI);
                 new DoGetDaTaHangGio().execute(urlAPI_HOUR);
                 new DoGetDaTaHangNgay().execute(urlAPI_DAY);
+                new DogetJsonGraphDay().execute(urlAPI_DAY);
                 Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -123,17 +123,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        mSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-            }
-        });
-
     }
+    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -147,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -163,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    //public static String icon;
     private ArrayList<HangGio> listDataHangGio(String json) {
         mListHangGio = new ArrayList<>();
         String icon = "";
@@ -203,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private ArrayList<HangNgay> listDataHangNgay(String json) {
-        mListHangNgay=new ArrayList<>();
+        mListHangNgay = new ArrayList<>();
         String icon = "";
         try {
 
@@ -211,11 +201,14 @@ public class MainActivity extends AppCompatActivity {
             jsonArray = jsonObject.getJSONArray("list");
             int leght1 = jsonArray.length();
             for (int i = 0; i <= leght1; i++) {
+
                 JSONObject job = jsonArray.getJSONObject(i);
                 long time = job.getLong("dt");
-
                 jsonObject = job.getJSONObject("temp");
-                int tempDay = jsonObject.getInt("day");
+                double tempDay = jsonObject.getDouble("day");
+                double dTempDay = tempDay - 273.15;
+                dTempDay = Math.round(dTempDay);
+                int iTempDay = (int) dTempDay;
                 String doAm = job.getString("humidity");
                 int leght = job.getJSONArray("weather").length();
                 try {
@@ -226,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mListHangNgay.add(new HangNgay(time, doAm, tempDay, icon));
+                mListHangNgay.add(new HangNgay(time, doAm, iTempDay, icon));
             }
 
         } catch (Exception e) {
@@ -313,10 +306,7 @@ public class MainActivity extends AppCompatActivity {
             jsonObject = jsonObject.getJSONObject("sys");
             long lSunrise = jsonObject.getLong("sunrise");
             long lSunset = jsonObject.getLong("sunset");
-
-
             sysWeather = new SysWeather(jsonObject.getString("type"), jsonObject.getString("id"), jsonObject.getString("message"), jsonObject.getString("country"), lSunrise, lSunset);
-
             timeSunrise = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date(lSunrise * 1000));
             timeSunset = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date(lSunset * 1000));
         } catch (Exception e) {
@@ -326,15 +316,12 @@ public class MainActivity extends AppCompatActivity {
 
     Wind wind;
 
-
     private void GetJsonWind(String json) {
         try {
             jsonObject = new JSONObject(json);
             jsonObject = jsonObject.getJSONObject("wind");
             String speed = jsonObject.getString("speed");
-
             wind = new Wind(speed);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -367,8 +354,6 @@ public class MainActivity extends AppCompatActivity {
             double dTemp_max = Double.parseDouble(temp_max) - 273.15;
             dTemp_max = Math.round(dTemp_max);
             Itemp_max = (int) dTemp_max;
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -381,7 +366,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            
         }
 
         @Override
@@ -395,10 +379,8 @@ public class MainActivity extends AppCompatActivity {
                     result += (char) byteCharactorHour;
                 }
                 Log.d(TAG1, "doInBackground: " + result);
-
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
 
             return listDataHangNgay(result);
@@ -410,8 +392,6 @@ public class MainActivity extends AppCompatActivity {
             mAdapterHangNgay = new AdapterHangNgay(getBaseContext(), aVoid);
             mRecycleViewHangNgay.setAdapter(mAdapterHangNgay);
             mAdapterHangNgay.notifyDataSetChanged();
-
-
         }
     }
 
@@ -436,18 +416,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG1, "doInBackground: " + result);
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
-
             return listDataHangGio(result);
-
         }
 
         @Override
         protected void onPostExecute(ArrayList<HangGio> aVoid) {
             super.onPostExecute(aVoid);
             mAdapter = new AdapterHangGio(getBaseContext(), aVoid);
-
             mRecyclerView.setAdapter(mAdapter);
         }
     }
@@ -470,7 +446,6 @@ public class MainActivity extends AppCompatActivity {
                 while ((byteCharactor = is.read()) != -1) {
                     result += (char) byteCharactor;
                 }
-
                 Log.d(TAG, "doInBackground: " + result);
                 GetJsonMainWeather(result);
                 GetJsonWind(result);
@@ -558,13 +533,68 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
-
             tvDescription.setText(sDescription);
+        }
+    }
 
+    //Graph
+    class DogetJsonGraphDay extends AsyncTask<String, Void, List<String>> {
+        private String result = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected List<String> doInBackground(String... strings) {
+            try {
+                URL urlHour = new URL(strings[0]);
+                URLConnection urlConnectionHour = urlHour.openConnection();
+                InputStream isHour = urlConnectionHour.getInputStream();
+                int byteCharactorHour;
+                while ((byteCharactorHour = isHour.read()) != -1) {
+                    result += (char) byteCharactorHour;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+            return ListDataGraphDay(result);
+        }
+
+        @Override
+        protected void onPostExecute(List<String> graphDays) {
+            super.onPostExecute(graphDays);
+            mygraphDays.getData(graphDays);
         }
     }
 
 
+    private List<String> ListDataGraphDay(String json) {
+        mListGraphDay = new ArrayList<>();
+        try {
+            jsonObject = new JSONObject(json);
+            jsonArray = jsonObject.getJSONArray("list");
+            int leght1 = jsonArray.length();
+            for (int i = 0; i <= leght1; i++) {
+                JSONObject job = jsonArray.getJSONObject(i);
+                long time = job.getLong("dt");
+                String sTime = new java.text.SimpleDateFormat("dd").format(new java.util.Date(time * 1000));
+                jsonObject = job.getJSONObject("temp");
+                double tempDay = jsonObject.getDouble("day");
+                double tempDay1 = (double) tempDay - 273.15;
+                tempDay1 = Math.round(tempDay1);
+                int tempDay2 = (int) tempDay1;
+                mListGraphDay.add(sTime);
+                mListGraphDay.add(String.valueOf(tempDay2));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mListGraphDay;
+    }
 }
 
 

@@ -111,18 +111,12 @@ public class AdapterHangGio extends RecyclerView.Adapter<AdapterHangGio.ViewHold
             case "50n":
                 holder.imgIconHangGio.setImageResource(R.drawable.n50);
                 break;
-
-
-
         }
 
     }
 
     @Override
     public int getItemCount() {
-//        if(mListHangGio==null){
-//            return 0;
-//        }
         return mListHangGio.size();
     }
 
@@ -136,16 +130,6 @@ public class AdapterHangGio extends RecyclerView.Adapter<AdapterHangGio.ViewHold
             tvDoAm=itemView.findViewById(R.id.tvPhanTramLuongMuaHg);
             tvTemp=itemView.findViewById(R.id.tvNhietDoHangGio);
             imgIconHangGio=itemView.findViewById(R.id.imgDuBao);
-
-
-//
-//            switch (imgDuBao){
-//                case :
-//                    break;
-//            }
-
-
-
         }
     }
 }

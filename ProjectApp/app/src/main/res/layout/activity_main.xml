@@ -4,40 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:fitsSystemWindows="true"
     tools:context=".activity.MainActivity">
 
     <FrameLayout
-
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/search_layover_bg"
-            android:elevation="4dp"
+            android:background="#2A46D1"
+
             android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+            android:theme="@style/AppTheme.AppBarOverlay" />
+
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </FrameLayout>
 
     <ScrollView
-        android:background="@drawable/background"
-        android:layout_below="@+id/toolbar_container"
+        android:id="@+id/svView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_below="@+id/toolbar_container"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
 
 
             <ImageView
@@ -373,11 +374,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/rlHangGio" />
 
             <RelativeLayout
-                android:layout_marginTop="10dp"
                 android:id="@+id/rlHangNgay"
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/backgroundlitte"
                 app:layout_constraintLeft_toLeftOf="@+id/tvHangNgay"
@@ -392,13 +393,37 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="10dp"></androidx.recyclerview.widget.RecyclerView>
             </RelativeLayout>
+            <TextView
+                android:id="@+id/tvGraphDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="@+id/rlHangNgay"
+                app:layout_constraintTop_toBottomOf="@+id/rlHangNgay"
+                android:text="Graph 7 Days"
+                android:textColor="#ffff"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp"/>
+            <RelativeLayout
+                android:id="@+id/rlGraphDay"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/backgroundlitte"
+                app:layout_constraintLeft_toLeftOf="@+id/tvGraphDays"
+                app:layout_constraintTop_toBottomOf="@+id/tvGraphDays">
+                <com.tranhuyson.weather.model.GraphDays
+                    android:id="@+id/grDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </ScrollView>
-
 
 
 </RelativeLayout>
