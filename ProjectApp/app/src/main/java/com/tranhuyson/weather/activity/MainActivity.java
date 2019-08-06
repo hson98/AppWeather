@@ -1,12 +1,22 @@
 package com.tranhuyson.weather.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.Spannable;
@@ -25,6 +35,7 @@ import android.widget.Toast;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tranhuyson.weather.Adapter.AdapterHangGio;
 import com.tranhuyson.weather.Adapter.AdapterHangNgay;
+import com.tranhuyson.weather.Fragment.ListVitriFragment;
 import com.tranhuyson.weather.R;
 import com.tranhuyson.weather.model.GraphDays;
 import com.tranhuyson.weather.model.HangGio;
@@ -49,6 +60,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import pub.devrel.easypermissions.EasyPermissions;
+
 import static com.tranhuyson.weather.model.Define.API_WEATHER;
 import static com.tranhuyson.weather.model.Define.API_WEATHER_HOUR;
 import static com.tranhuyson.weather.model.Define.API_WEATHER_KEY;
@@ -56,10 +69,13 @@ import static com.tranhuyson.weather.model.Define.API_WEATHER_KEY;
 public class MainActivity extends AppCompatActivity {
     private TextView tvTimeDate, tvDescription, tvTemp, tvTimeSunRise, tvTimeSunSet, tvHumidity, tvMinMax, tvSpeedWind, tvNameCity, tvLuongMua;
     private ImageView imgIcon;
-    String nameCity = "Hanoi";
-    String urlAPI = API_WEATHER + "weather?q=" + nameCity + API_WEATHER_KEY;
+    String nameCity = "London";
+    private String lat;
+    private String lng;
+        String urlAPI = API_WEATHER + "weather?q=" + nameCity + API_WEATHER_KEY;
     String urlAPI_HOUR = API_WEATHER + "forecast?q=" + nameCity + API_WEATHER_KEY;
     String urlAPI_DAY = API_WEATHER + "forecast/daily?q=" + nameCity + API_WEATHER_KEY;
+
     private ArrayList<HangGio> mListHangGio;
     private RecyclerView mRecyclerView;
     private AdapterHangGio mAdapter;
@@ -74,14 +90,78 @@ public class MainActivity extends AppCompatActivity {
     private List<String> mListGraphDay;
     GraphDays mygraphDays;
 
+    //String urlAPI_LOCATION = API_WEATHER + "weather?lat=" + lat + "&lon=" + lng + "&appid=" + API_WEATHER_KEY;
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mygraphDays = findViewById(R.id.grDay);
-        new DogetJsonGraphDay().execute(urlAPI_DAY);
-        addControl();
 
+        addControl();
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            lat = bundle.getString("lat");
+            lng = bundle.getString("lng");
+            String urlAPI_LOCATION = API_WEATHER + "weather?lat=" + lat + "&lon=" + lng + API_WEATHER_KEY;
+            new DoGetData().execute(urlAPI_LOCATION);
+            String urlAPI_HOUR = API_WEATHER + "forecast?lat=" + lat + "&lon=" + lng + API_WEATHER_KEY;
+            new DoGetDaTaHangGio().execute(urlAPI_HOUR);
+            String urlAPI_DAY = API_WEATHER + "forecast/daily?lat=" + lat + "&lon=" + lng+ API_WEATHER_KEY;
+            new DoGetDaTaHangNgay().execute(urlAPI_DAY);
+            new DogetJsonGraphDay().execute(urlAPI_DAY);
+        }
+
+        //lay GPS
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        String provider = LocationManager.GPS_PROVIDER;
+        checkRequiredPermissions();
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(provider, 1000, 20, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                String lat1 = location.getLatitude() + "";
+                String lng1 = location.getLongitude() + "";
+                Toast.makeText(MainActivity.this, "lat" + lat1 + "lng" + lng1, Toast.LENGTH_SHORT).show();
+                if (lat == null && lng == null) {
+                    String urlAPI_LOCATION = API_WEATHER + "weather?lat=" + lat1 + "&lon=" + lng1 + API_WEATHER_KEY;
+                    new DoGetData().execute(urlAPI_LOCATION);
+                    String urlAPI_HOUR = API_WEATHER + "forecast?lat=" + lat1 + "&lon=" + lng1 + API_WEATHER_KEY;
+
+                    new DoGetDaTaHangGio().execute(urlAPI_HOUR);
+                    String urlAPI_DAY = API_WEATHER + "forecast/daily?lat=" + lat1 + "&lon=" + lng1+ API_WEATHER_KEY;
+                    new DoGetDaTaHangNgay().execute(urlAPI_DAY);
+                    new DogetJsonGraphDay().execute(urlAPI_DAY);
+                }
+
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+
+            }
+        });
 
         //HangGio
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false);
@@ -89,16 +169,17 @@ public class MainActivity extends AppCompatActivity {
         mListHangGio = new ArrayList<HangGio>();
         mAdapter = new AdapterHangGio(MainActivity.this, mListHangGio);
         mRecyclerView.setAdapter(mAdapter);
-        new DoGetDaTaHangGio().execute(urlAPI_HOUR);
+
         //hang ngay
         LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false);
         mRecycleViewHangNgay.setLayoutManager(layoutManager);
         mListHangNgay = new ArrayList<HangNgay>();
         mAdapterHangNgay = new AdapterHangNgay(MainActivity.this, mListHangNgay);
         mRecycleViewHangNgay.setAdapter(mAdapterHangNgay);
-        new DoGetDaTaHangNgay().execute(urlAPI_DAY);
-        new DoGetData().execute(urlAPI);
-        new DoGetDaTaHangGio().execute(urlAPI_HOUR);
+
+
+        // new DoGetData().execute(urlAPI);
+
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         mSearchView = findViewById(R.id.search_view);
@@ -117,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 new DoGetDaTaHangGio().execute(urlAPI_HOUR);
                 new DoGetDaTaHangNgay().execute(urlAPI_DAY);
                 new DogetJsonGraphDay().execute(urlAPI_DAY);
-                tvNameCity.setText(query);
+//                tvNameCity.setText(query);
                 Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -129,6 +210,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private boolean checkRequiredPermissions() {
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if (!EasyPermissions.hasPermissions(this, perms)) {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, getString(R.string.app_name1)
+                    , 20000
+                    , perms);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -145,7 +244,19 @@ public class MainActivity extends AppCompatActivity {
 
                 return true;
             case R.id.menu_setting:
-                Toast.makeText(getApplication(),"Setting",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), "Setting", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_Maps:
+                Intent intent = new Intent(getApplication(), MapsActivity.class);
+                startActivity(intent);
+                Toast.makeText(getApplication(), "Maps open", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_ListVitri:
+                Toast.makeText(this, "Vi tri", Toast.LENGTH_SHORT).show();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.contener, new ListVitriFragment());
+                fragmentTransaction.commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -202,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<HangNgay> listDataHangNgay(String json) {
         mListHangNgay = new ArrayList<>();
         String icon = "";
-        String moTa="";
+        String moTa = "";
         try {
 
             jsonObject = new JSONObject(json);
@@ -222,17 +333,13 @@ public class MainActivity extends AppCompatActivity {
                 double dTempDayMin = tempDayMin - 273.15;
                 dTempDayMin = Math.round(dTempDayMin);
                 int iTempDayMin1 = (int) dTempDayMin;
-                String iTempDayMin=iTempDayMin1+"";
+                String iTempDayMin = iTempDayMin1 + "";
 
                 double tempDayMax = jsonObject.getDouble("max");
                 double dTempDayMax = tempDayMax - 273.15;
                 dTempDayMax = Math.round(dTempDayMax);
                 int iTempDayMax1 = (int) dTempDayMax;
-                String  iTempDayMax=iTempDayMax1+"";
-
-
-
-
+                String iTempDayMax = iTempDayMax1 + "";
 
 
                 String doAm = job.getString("humidity");
@@ -241,12 +348,12 @@ public class MainActivity extends AppCompatActivity {
                     for (int j = 0; j <= leght; j++) {
                         JSONObject job1 = job.getJSONArray("weather").getJSONObject(j);
                         icon = job1.getString("icon");
-                        moTa=job1.getString("description");
+                        moTa = job1.getString("description");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mListHangNgay.add(new HangNgay(time, doAm, iTempDay, icon,iTempDayMin,iTempDayMax,moTa));
+                mListHangNgay.add(new HangNgay(time, doAm, iTempDay, icon, iTempDayMin, iTempDayMax, moTa));
             }
 
         } catch (Exception e) {
@@ -500,7 +607,7 @@ public class MainActivity extends AppCompatActivity {
             //DateTime
             tvTimeDate.setText(sDateTime);
             //NameCity
-            //tvNameCity.setText(nameCity1);
+            tvNameCity.setText(nameCity1);
             //Weather
             switch (sIcon) {
                 case "01d":

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/contener"
     tools:context=".activity.MainActivity">
 
 
@@ -356,7 +357,7 @@
             <RelativeLayout
                 android:id="@+id/rlHangNgay"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="280dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
@@ -399,27 +400,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/rlHangNgay1"
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/backgroundlitte"
-                app:layout_constraintLeft_toLeftOf="@+id/rlGraphDay"
-                app:layout_constraintTop_toBottomOf="@+id/rlGraphDay">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcHangNgay1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"></androidx.recyclerview.widget.RecyclerView>
-            </RelativeLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

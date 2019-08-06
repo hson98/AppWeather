@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">AppWeather</string>
+    <string name="app_name1">AppWeather</string>
+
+    <string name="title_activity_maps">Map</string>
     <string-array name="query_suggestios">
         <item>An Giang</item>
         <item>Bắc Giang</item>

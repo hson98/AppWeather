@@ -5,13 +5,20 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_action_action_search"
         android:title="Search City"
-
-        app:showAsAction="ifRoom|collapseActionView"></item>
+        app:showAsAction="always"></item>
     <item
-        android:title="Setting"
         android:id="@+id/menu_setting"
-        app:showAsAction="never"
-        >
+        android:title="Setting"
+        app:showAsAction="never">
 
     </item>
+    <item
+        android:title="Vi trí"
+        android:id="@+id/menu_ListVitri"
+        app:showAsAction="always"></item>
+    <item
+        android:icon="@drawable/placeholder"
+        android:id="@+id/menu_Maps"
+        app:showAsAction="always"
+        android:title="Maps"></item>
 </menu>

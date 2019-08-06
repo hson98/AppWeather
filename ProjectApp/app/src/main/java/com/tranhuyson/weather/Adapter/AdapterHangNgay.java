@@ -43,8 +43,8 @@ public class AdapterHangNgay extends RecyclerView.Adapter<AdapterHangNgay.ViewHo
         holder.tvTime.setText(sTime);
         holder.tvTemp.setText(hangNgay.getTemp()+"°");
         holder.tvDoAm.setText(hangNgay.getDoAm()+"%");
-        holder.tvMaxMinNgay.setText("Min:"+hangNgay.getMin()+" Max"+ hangNgay.getMax());
-        holder.tvMoTa.setText("Mo ta:"+ hangNgay.getMoTa());
+        holder.tvMaxMinNgay.setText(hangNgay.getMax()+"°"+"/ "+hangNgay.getMin()+"°" );
+        holder.tvMoTa.setText( hangNgay.getMoTa());
         String icon=hangNgay.getIcon();
         switch (icon){
             case "01d":
