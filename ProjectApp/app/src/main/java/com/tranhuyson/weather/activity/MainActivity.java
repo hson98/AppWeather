@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
         mSearchView = findViewById(R.id.search_view);
         mSearchView.setSuggestions(getResources().getStringArray(R.array.query_suggestios));
         mSearchView.setEllipsize(true);
+        mSearchView.clearFocus();
+
+
         mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -114,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 new DoGetDaTaHangGio().execute(urlAPI_HOUR);
                 new DoGetDaTaHangNgay().execute(urlAPI_DAY);
                 new DogetJsonGraphDay().execute(urlAPI_DAY);
+                tvNameCity.setText(query);
                 Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -124,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_search:
 
+                return true;
+            case R.id.menu_setting:
+                Toast.makeText(getApplication(),"Setting",Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -195,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<HangNgay> listDataHangNgay(String json) {
         mListHangNgay = new ArrayList<>();
         String icon = "";
+        String moTa="";
         try {
 
             jsonObject = new JSONObject(json);
@@ -209,17 +217,36 @@ public class MainActivity extends AppCompatActivity {
                 double dTempDay = tempDay - 273.15;
                 dTempDay = Math.round(dTempDay);
                 int iTempDay = (int) dTempDay;
+                //Lay minmax
+                double tempDayMin = jsonObject.getDouble("min");
+                double dTempDayMin = tempDayMin - 273.15;
+                dTempDayMin = Math.round(dTempDayMin);
+                int iTempDayMin1 = (int) dTempDayMin;
+                String iTempDayMin=iTempDayMin1+"";
+
+                double tempDayMax = jsonObject.getDouble("max");
+                double dTempDayMax = tempDayMax - 273.15;
+                dTempDayMax = Math.round(dTempDayMax);
+                int iTempDayMax1 = (int) dTempDayMax;
+                String  iTempDayMax=iTempDayMax1+"";
+
+
+
+
+
+
                 String doAm = job.getString("humidity");
                 int leght = job.getJSONArray("weather").length();
                 try {
                     for (int j = 0; j <= leght; j++) {
                         JSONObject job1 = job.getJSONArray("weather").getJSONObject(j);
                         icon = job1.getString("icon");
+                        moTa=job1.getString("description");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mListHangNgay.add(new HangNgay(time, doAm, iTempDay, icon));
+                mListHangNgay.add(new HangNgay(time, doAm, iTempDay, icon,iTempDayMin,iTempDayMax,moTa));
             }
 
         } catch (Exception e) {
@@ -473,7 +500,7 @@ public class MainActivity extends AppCompatActivity {
             //DateTime
             tvTimeDate.setText(sDateTime);
             //NameCity
-            tvNameCity.setText(nameCity1);
+            //tvNameCity.setText(nameCity1);
             //Weather
             switch (sIcon) {
                 case "01d":

@@ -43,6 +43,8 @@ public class AdapterHangNgay extends RecyclerView.Adapter<AdapterHangNgay.ViewHo
         holder.tvTime.setText(sTime);
         holder.tvTemp.setText(hangNgay.getTemp()+"°");
         holder.tvDoAm.setText(hangNgay.getDoAm()+"%");
+        holder.tvMaxMinNgay.setText("Min:"+hangNgay.getMin()+" Max"+ hangNgay.getMax());
+        holder.tvMoTa.setText("Mo ta:"+ hangNgay.getMoTa());
         String icon=hangNgay.getIcon();
         switch (icon){
             case "01d":
@@ -115,8 +117,11 @@ public class AdapterHangNgay extends RecyclerView.Adapter<AdapterHangNgay.ViewHo
     public class ViewHolderHangNgay extends RecyclerView.ViewHolder {
         private TextView tvTime, tvDoAm,tvTemp;
         private ImageView imgIconHangNgay;
+        private TextView tvMaxMinNgay,tvMoTa;
         public ViewHolderHangNgay(@NonNull View itemView) {
             super(itemView);
+            tvMaxMinNgay=itemView.findViewById(R.id.tvMaxMinNgay);
+            tvMoTa=itemView.findViewById(R.id.tvMoTa);
             tvTime=itemView.findViewById(R.id.tvThuHangNgay);
             tvDoAm=itemView.findViewById(R.id.tvPhanTramLuongMuaHn);
             tvTemp=itemView.findViewById(R.id.tvNhietDoHangNgaySang);
