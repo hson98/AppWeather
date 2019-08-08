@@ -147,7 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                     final Address address = addressList.get(0);
                     LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                    Toast.makeText(MapsActivity.this, "lat" + address.getLatitude() + "Lng" + address.getLongitude(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MapsActivity.this, "lat" + address.getLatitude() + "Lng" + address.getLongitude(), Toast.LENGTH_SHORT).show();
                     mMap.addMarker(new MarkerOptions().position(latLng).title(location));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                     String API = "https://api.openweathermap.org/data/2.5/weather?lat=" + address.getLatitude() + "&lon=" + address.getLongitude() + "&appid=211ff006de9aba9ddd122331f87cdf8b";

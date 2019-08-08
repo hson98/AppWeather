@@ -7,18 +7,19 @@
         android:title="Search City"
         app:showAsAction="always"></item>
     <item
+        android:title="Vi trí"
+        android:id="@+id/menu_ListVitri"
+        app:showAsAction="never"></item>
+    <item
         android:id="@+id/menu_setting"
         android:title="Setting"
         app:showAsAction="never">
 
     </item>
+
     <item
-        android:title="Vi trí"
-        android:id="@+id/menu_ListVitri"
-        app:showAsAction="always"></item>
-    <item
-        android:icon="@drawable/placeholder"
+
         android:id="@+id/menu_Maps"
         app:showAsAction="always"
-        android:title="Maps"></item>
+        android:title="Bản đồ"></item>
 </menu>

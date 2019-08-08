@@ -7,6 +7,9 @@ public class ListViTri {
     private int nhietDo;
     private String quocGia;
 
+    public ListViTri() {
+    }
+
     public ListViTri(String nameCity, String anhMieuTa, String ngayThang, int nhietDo, String quocGia) {
         this.nameCity = nameCity;
         this.anhMieuTa = anhMieuTa;

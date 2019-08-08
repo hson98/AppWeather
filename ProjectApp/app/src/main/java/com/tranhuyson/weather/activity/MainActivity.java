@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     String nameCity = "London";
     private String lat;
     private String lng;
-        String urlAPI = API_WEATHER + "weather?q=" + nameCity + API_WEATHER_KEY;
+    String urlAPI = API_WEATHER + "weather?q=" + nameCity + API_WEATHER_KEY;
     String urlAPI_HOUR = API_WEATHER + "forecast?q=" + nameCity + API_WEATHER_KEY;
     String urlAPI_DAY = API_WEATHER + "forecast/daily?q=" + nameCity + API_WEATHER_KEY;
 
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             new DoGetData().execute(urlAPI_LOCATION);
             String urlAPI_HOUR = API_WEATHER + "forecast?lat=" + lat + "&lon=" + lng + API_WEATHER_KEY;
             new DoGetDaTaHangGio().execute(urlAPI_HOUR);
-            String urlAPI_DAY = API_WEATHER + "forecast/daily?lat=" + lat + "&lon=" + lng+ API_WEATHER_KEY;
+            String urlAPI_DAY = API_WEATHER + "forecast/daily?lat=" + lat + "&lon=" + lng + API_WEATHER_KEY;
             new DoGetDaTaHangNgay().execute(urlAPI_DAY);
             new DogetJsonGraphDay().execute(urlAPI_DAY);
         }
@@ -133,14 +133,14 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 String lat1 = location.getLatitude() + "";
                 String lng1 = location.getLongitude() + "";
-                Toast.makeText(MainActivity.this, "lat" + lat1 + "lng" + lng1, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "lat" + lat1 + "lng" + lng1, Toast.LENGTH_SHORT).show();
                 if (lat == null && lng == null) {
                     String urlAPI_LOCATION = API_WEATHER + "weather?lat=" + lat1 + "&lon=" + lng1 + API_WEATHER_KEY;
                     new DoGetData().execute(urlAPI_LOCATION);
                     String urlAPI_HOUR = API_WEATHER + "forecast?lat=" + lat1 + "&lon=" + lng1 + API_WEATHER_KEY;
 
                     new DoGetDaTaHangGio().execute(urlAPI_HOUR);
-                    String urlAPI_DAY = API_WEATHER + "forecast/daily?lat=" + lat1 + "&lon=" + lng1+ API_WEATHER_KEY;
+                    String urlAPI_DAY = API_WEATHER + "forecast/daily?lat=" + lat1 + "&lon=" + lng1 + API_WEATHER_KEY;
                     new DoGetDaTaHangNgay().execute(urlAPI_DAY);
                     new DogetJsonGraphDay().execute(urlAPI_DAY);
                 }
@@ -423,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             jsonObject = new JSONObject(json);
             long lDateTime = jsonObject.getLong("dt");
-            sDateTime = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(lDateTime * 1000));
+            sDateTime = new SimpleDateFormat("EEEE, dd/MM/yyyy HH:mm").format(new Date(lDateTime * 1000));
         } catch (Exception e) {
             e.printStackTrace();
         }

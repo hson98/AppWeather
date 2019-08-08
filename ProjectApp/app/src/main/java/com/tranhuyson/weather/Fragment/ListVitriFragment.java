@@ -49,27 +49,31 @@ public class ListVitriFragment extends Fragment {
     private Context mContext;
 
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mContext=context;
+        mContext = context;
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_listvitri,container,false);
-        mRecycleView=view.findViewById(R.id.rcListVitri);
-        searchViewList=view.findViewById(R.id.sv_list_vitri);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
+        View view = inflater.inflate(R.layout.fragment_listvitri, container, false);
+        mRecycleView = view.findViewById(R.id.rcListVitri);
+        searchViewList = view.findViewById(R.id.sv_list_vitri);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         mRecycleView.setLayoutManager(linearLayoutManager);
+//        mAdapter=new ApdapterListVitri(mContext,mListDataViTri);
+//        mRecycleView.setAdapter(mAdapter);
+//        mAdapter.notifyDataSetChanged();
+
         searchViewList.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 String location = searchViewList.getQuery().toString();
                 List<Address> addressList = null;
-                if(location != null || !location.equals("")){
-                    Geocoder geocoder=new Geocoder(getActivity());
+                if (location != null || !location.equals("")) {
+                    Geocoder geocoder = new Geocoder(getActivity());
                     try {
                         addressList = geocoder.getFromLocationName(location, 1);
                     } catch (IOException e) {
@@ -83,6 +87,11 @@ public class ListVitriFragment extends Fragment {
 
 
                 }
+
+//                mAdapter=new ApdapterListVitri(mContext,mListDataViTri);
+////                mRecycleView.setAdapter(mAdapter);
+//                mAdapter.notifyDataSetChanged();
+
                 return false;
             }
 
@@ -93,7 +102,6 @@ public class ListVitriFragment extends Fragment {
         });
         return view;
     }
-
 
 
     class DoGetDataList extends AsyncTask<String, Void, ArrayList<ListViTri>> {
@@ -121,12 +129,13 @@ public class ListVitriFragment extends Fragment {
         }
 
 
-
         @Override
         protected void onPostExecute(ArrayList<ListViTri> s) {
             super.onPostExecute(s);
             Toast.makeText(mContext, "date" + sDateTime + "temp" + temp, Toast.LENGTH_SHORT).show();
-            mAdapter=new ApdapterListVitri(mContext,s);
+            mListDataViTri = new ArrayList<>();
+            mListDataViTri.addAll(s);
+            mAdapter = new ApdapterListVitri(mContext, s);
             mRecycleView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
 
@@ -193,9 +202,9 @@ public class ListVitriFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_AddVitri:
-                Toast.makeText(getActivity(),"list vi tri",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "list vi tri", Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);

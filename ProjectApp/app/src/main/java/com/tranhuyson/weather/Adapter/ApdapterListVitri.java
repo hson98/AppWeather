@@ -46,7 +46,9 @@ public class ApdapterListVitri extends RecyclerView.Adapter<ApdapterListVitri.Vi
 
     @Override
     public int getItemCount() {
+
         return mListVitri.size();
+
     }
 
     public class ViewHolderListViTri extends RecyclerView.ViewHolder {
