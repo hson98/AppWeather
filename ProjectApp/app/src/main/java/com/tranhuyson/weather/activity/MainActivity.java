@@ -256,6 +256,7 @@ public class MainActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(R.id.contener, new ListVitriFragment());
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 return true;
             default:

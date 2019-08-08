@@ -1,16 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+
     >
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:background="#000"/>
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rcListVitri"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
-</LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+<ImageView
+    android:id="@+id/img_listBack"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="23dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/back"/>
+            <SearchView
+                android:id="@+id/sv_list_vitri"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_round"
+                android:elevation="5dp"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search.."
+                ></SearchView>
+
+          <Button
+              android:layout_marginLeft="20dp"
+              android:layout_marginTop="10dp"
+              android:id="@+id/btn_listBanDo"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Bản đồ"
+              android:background="@drawable/bg_round"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Danh sách vị trí"
+            android:layout_marginTop="10dp"
+            android:textSize="25dp"
+            android:textColor="#ffff"
+            android:gravity="center"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:id="@+id/rcListVitri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

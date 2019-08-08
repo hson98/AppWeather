@@ -4,6 +4,10 @@
     <item
         android:id="@+id/menu_AddVitri"
         android:title="Thêm"
-        android:icon="@drawable/add"
+        android:icon="@drawable/ic_action_action_search"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/menu_MapsVitri"
+        android:title="Bản đồ"
         app:showAsAction="always"></item>
 </menu>

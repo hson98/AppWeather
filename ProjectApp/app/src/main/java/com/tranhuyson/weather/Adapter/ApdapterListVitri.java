@@ -38,6 +38,9 @@ public class ApdapterListVitri extends RecyclerView.Adapter<ApdapterListVitri.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolderListViTri holder, int position) {
                 ListViTri listViTri=mListVitri.get(position);
+                holder.tvNameCity.setText(listViTri.getNameCity()+", "+listViTri.getQuocGia());
+                holder.tvNhietDo.setText(listViTri.getNhietDo()+"°");
+                holder.tvTime.setText(listViTri.getNgayThang());
 
     }
 
